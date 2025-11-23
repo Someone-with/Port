@@ -43,32 +43,36 @@
 
       <div class="mx-6 my-6 border-t border-white/10"></div>
 
-      <!-- Bio (editable) -->
+      <!-- Bio -->
       <div id="bioText" class="px-6 text-gray-300 text-lg text-center">
         Roblox scripter • Game developer
       </div>
 
       <!-- Social Buttons -->
-      <div class="flex justify-center gap-8 mt-8">
+      <div class="flex justify-center gap-10 mt-8">
+        <!-- PERFECT ROBLOX LOGO (exactly like in your screenshot) -->
         <a id="robloxLink" href="https://www.roblox.com/users/1944512650/profile" target="_blank"
-           class="p-4 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full transition transform hover:scale-110 shadow-lg">
-          <img src="https://www.roblox.com/img/RobloxLogo.png" alt="Roblox" class="w-10 h-10 rounded">
+           class="w-16 h-16 bg-cyan-500 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition">
+          <svg viewBox="0 0 100 100" class="w-10 h-10">
+            <path fill="#fff" d="M85.7 35.5 64.5 14.3 50 28.8 35.5 14.3 14.3 35.5 28.8 50l-14.5 14.5 21.2 21.2L50 71.2l14.5 14.5 21.2-21.2L71.2 50l14.5-14.5z"/>
+            <path fill="#000" d="M64.5 35.5 50 50l14.5 14.5L85.7 35.5z"/>
+          </svg>
         </a>
         <a id="discordLink" href="https://discord.gg/FHmmE2EePE" target="_blank"
-           class="p-4 bg-gray-800 hover:bg-[#5865F2] rounded-full transition transform hover:scale-110">
+           class="p-4 bg-gray-800 hover:bg-[#5865F2] rounded-full transition hover:scale-110">
           <i class="fa-brands fa-discord text-3xl"></i>
         </a>
         <a id="youtubeLink" href="https://youtube.com/@zapgamese" target="_blank"
-           class="p-4 bg-gray-800 hover:bg-red-600 rounded-full transition transform hover:scale-110">
+           class="p-4 bg-gray-800 hover:bg-red-600 rounded-full transition hover:scale-110">
           <i class="fa-brands fa-youtube text-3xl"></i>
         </a>
       </div>
 
       <!-- Reactions -->
       <div class="flex justify-center gap-12 mt-10 text-5xl">
-        <button onclick="react('zap')" class="hover:scale-125 transition"> <span id="zap">0</span></button>
-        <button onclick="react('heart')" class="hover:scale-125 transition"> <span id="heart">0</span></button>
-        <button onclick="react('fire')" class="hover:scale-125 transition"> <span id="fire">0</span></button>
+        <button onclick="react('zap')" class="hover:scale-125 transition"><span id="zap">0</span></button>
+        <button onclick="react('heart')" class="hover:scale-125 transition"><span id="heart">0</span></button>
+        <button onclick="react('fire')" class="hover:scale-125 transition"><span id="fire">0</span></button>
       </div>
 
       <div class="text-center mt-6 text-gray-400 text-lg">
@@ -85,7 +89,16 @@
       </div>
     </div>
 
-    <!-- SECRET ADMIN PANEL (only you can open) -->
+    <!-- Mobile-Friendly Password Box (always visible at bottom) -->
+    <div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent pointer-events-none">
+      <div class="max-w-md mx-auto pointer-events-auto">
+        <input type="password" id="ownerPass" placeholder="owner login..." 
+               class="w-full p-3 rounded-lg bg-white/10 border border-cyan-500/50 text-white placeholder-gray-500 text-sm">
+        <button onclick="checkPassword()" class="mt-2 w-full bg-cyan-600 hover:bg-cyan-500 py-2 rounded-lg text-sm font-bold">Login as Owner</button>
+      </div>
+    </div>
+
+    <!-- Admin Panel (hidden until login) -->
     <div id="adminPanel" class="admin-panel fixed bottom-0 left-0 right-0 glass bg-black/90 border-t border-cyan-500 p-6 max-w-md mx-auto rounded-t-3xl">
       <h2 class="text-2xl font-bold text-cyan-400 mb-4">Owner Controls</h2>
       <input id="adminBio" placeholder="New bio" class="w-full p-3 bg-white/10 border border-white/20 rounded mb-3 text-white">
@@ -93,30 +106,28 @@
       <input id="adminDiscord" placeholder="Discord link" class="w-full p-3 bg-white/10 border border-white/20 rounded mb-3 text-white">
       <input id="adminYoutube" placeholder="YouTube link" class="w-full p-3 bg-white/10 border border-white/20 rounded mb-5 text-white">
       <button onclick="saveSettings()" class="w-full bg-cyan-600 hover:bg-cyan-500 py-3 rounded-lg font-bold">Save Changes</button>
-      <button onclick="closeAdmin()" class="w-full mt-2 bg-red-600 hover:bg-red-500 py-3 rounded-lg font-bold">Close Panel</button>
+      <button onclick="document.getElementById('adminPanel').classList.remove('open')" 
+              class="w-full mt-2 bg-red-600 hover:bg-red-500 py-3 rounded-lg font-bold">Close</button>
     </div>
   </div>
 
   <script>
-    // CHANGE THIS TO YOUR SECRET PASSWORD
-    const OWNER_PASSWORD = "zapadmin123";   // ←←← CHANGE THIS!!!
+    // ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
+    const OWNER_PASSWORD = "zapadmin123";  // ← CHANGE THIS TO YOUR SECRET!
+    // →→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→→
 
-    let input = "";
-    let isOwner = localStorage.getItem("isOwner") === "true";
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && input === OWNER_PASSWORD) {
+    function checkPassword() {
+      if (document.getElementById("ownerPass").value === OWNER_PASSWORD) {
         localStorage.setItem("isOwner", "true");
-        isOwner = true;
         document.getElementById("adminPanel").classList.add("open");
         loadAdminSettings();
-        input = "";
-      } else if (e.key.length === 1) {
-        input += e.key;
-      } else if (e.key === "Backspace") {
-        input = input.slice(0, -1);
+        document.getElementById("ownerPass").value = "";
+      } else {
+        alert("Wrong password");
       }
-    });
+    }
+
+    const isOwner = localStorage.getItem("isOwner") === "true";
 
     // Load saved settings
     const saved = JSON.parse(localStorage.getItem("portfolioSettings") || "{}");
@@ -133,37 +144,35 @@
     }
 
     function saveSettings() {
-      const newSettings = {
+      const s = {
         bio: document.getElementById("adminBio").value || "Roblox scripter • Game developer",
-        roblox: document.getElementById("adminRoblox").value || "https://roblox.com",
-        discord: document.getElementById("adminDiscord").value || "https://discord.gg",
-        youtube: document.getElementById("adminYoutube").value || "https://youtube.com"
+        roblox: document.getElementById("adminRoblox").value,
+        discord: document.getElementById("adminDiscord").value,
+        youtube: document.getElementById("adminYoutube").value
       };
-      localStorage.setItem("portfolioSettings", JSON.stringify(newSettings));
+      localStorage.setItem("portfolioSettings", JSON.stringify(s));
       location.reload();
     }
 
-    function closeAdmin() {
-      document.getElementById("adminPanel").classList.remove("open");
-    }
-
-    // Daily views, reactions, comments with delete (owner only)
+    // Daily views
     const today = new Date().toDateString();
     if (localStorage.getItem("lastVisit") !== today) {
-      let views = parseInt(localStorage.getItem("dailyViews") || "0") + 1;
-      localStorage.setItem("dailyViews", views);
+      let v = parseInt(localStorage.getItem("dailyViews") || "0") + 1;
+      localStorage.setItem("dailyViews", v);
       localStorage.setItem("lastVisit", today);
     }
     document.getElementById("views").textContent = localStorage.getItem("dailyViews") || "0";
 
+    // Reactions
     const reactions = JSON.parse(localStorage.getItem("reactions") || '{"zap":0,"heart":0,"fire":0}');
     Object.keys(reactions).forEach(r => document.getElementById(r).textContent = reactions[r]);
-    window.react = (type) => {
-      reactions[type]++;
+    window.react = (t) => {
+      reactions[t]++;
       localStorage.setItem("reactions", JSON.stringify(reactions));
-      document.getElementById(type).textContent = reactions[type];
+      document.getElementById(t).textContent = reactions[t];
     };
 
+    // Comments with owner-only delete
     function loadComments() {
       const comments = JSON.parse(localStorage.getItem("comments") || "[]");
       const list = document.getElementById("commentsList");
@@ -180,27 +189,18 @@
         list.appendChild(div);
       });
     }
-
-    window.deleteComment = (index) => {
-      if (!isOwner) return;
-      let comments = JSON.parse(localStorage.getItem("comments") || "[]");
-      comments.splice(index, 1);
-      localStorage.setItem("comments", JSON.stringify(comments));
-      loadComments();
-    };
-
+    window.deleteComment = (i) => { if(isOwner){ let c=JSON.parse(localStorage.getItem("comments")||"[]"); c.splice(i,1); localStorage.setItem("comments",JSON.stringify(c)); loadComments(); }};
     window.addComment = () => {
-      const name = document.getElementById("commentName").value.trim() || "Anonymous";
-      const text = document.getElementById("commentText").value.trim();
-      if (!text) return;
-      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
-      comments.push({ name, text });
-      localStorage.setItem("comments", JSON.stringify(comments));
-      document.getElementById("commentName").value = "";
-      document.getElementById("commentText").value = "";
+      const n = document.getElementById("commentName").value.trim() || "Anonymous";
+      const t = document.getElementById("commentText").value.trim();
+      if(!t) return;
+      const c = JSON.parse(localStorage.getItem("comments")||"[]");
+      c.push({name:n,text:t});
+      localStorage.setItem("comments",JSON.stringify(c));
+      document.getElementById("commentName").value="";
+      document.getElementById("commentText").value="";
       loadComments();
     };
-
     loadComments();
   </script>
 </body>
