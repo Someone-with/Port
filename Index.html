@@ -19,17 +19,17 @@
     <!-- Banner -->
     <div class="h-48 bg-gradient-to-r from-cyan-600 via-purple-700 to-black rounded-t-3xl"></div>
 
-    <!-- Main Glass Card -->
+    <!-- Main Card -->
     <div class="glass bg-black/70 border border-white/20 rounded-3xl -mt-20 mx-4 shadow-2xl pb-8">
 
-      <!-- Avatar - Your exact Discord PFP -->
+      <!-- Avatar -->
       <div class="flex justify-center -mt-20">
         <img src="https://cdn.discordapp.com/attachments/1431500505674289305/1441943442002415626/IMG_1470.jpg?ex=6923a1fa&is=6922507a&hm=a6f15a2cb7c80a7094e70ace9641acc2cdd70edca0f80cd2521812bdeb359998&"
              alt="Someone"
              class="w-32 h-32 rounded-full border-8 border-black shadow-2xl ring-4 ring-cyan-500 object-cover">
       </div>
 
-      <!-- Name + Username + Verified -->
+      <!-- Name + Verified -->
       <div class="text-center mt-6">
         <h1 class="text-3xl font-bold text-white flex items-center justify-center gap-2">
           Someone
@@ -43,16 +43,19 @@
 
       <div class="mx-6 my-6 border-t border-white/10"></div>
 
-      <!-- Bio -->
-      <div class="px-6 text-gray-300 text-lg leading-relaxed text-center">
+      <!-- Short Bio -->
+      <div class="px-6 text-gray-300 text-lg text-center">
         Roblox scripter • Game developer
       </div>
 
       <!-- Social Buttons -->
-      <div class="flex justify-center gap-6 mt-8">
+      <div class="flex justify-center gap-8 mt-8">
+        <!-- Roblox - Using direct SVG so it NEVER fails -->
         <a href="https://www.roblox.com/users/1944512650/profile" target="_blank"
            class="p-4 bg-gray-800 hover:bg-cyan-600 rounded-full transition transform hover:scale-110">
-          <i class="fa-brands fa-roblox text-3xl"></i>
+          <svg class="w-10 h-10" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12.92 2.26 19.5 5.5l-1.85 10.35-5.73 2.14-5.73-2.14L4.5 5.5l8.42-3.24zM12 5.75l-5.86 2.25 1.35 7.55 4.51 1.68 4.51-1.68 1.35-7.55L12 5.75z"/>
+          </svg>
         </a>
         <a href="https://discord.gg/FHmmE2EePE" target="_blank"
            class="p-4 bg-gray-800 hover:bg-[#5865F2] rounded-full transition transform hover:scale-110">
@@ -65,24 +68,23 @@
       </div>
 
       <!-- Live Reactions -->
-      <div class="flex justify-center gap-10 mt-10 text-5xl">
+      <div class="flex justify-center gap-12 mt-10 text-5xl">
         <button onclick="react('zap')" class="hover:scale-125 transition" title="Zap"> <span id="zap">0</span></button>
         <button onclick="react('heart')" class="hover:scale-125 transition" title="Love"> <span id="heart">0</span></button>
         <button onclick="react('fire')" class="hover:scale-125 transition" title="Fire"> <span id="fire">0</span></button>
       </div>
 
-      <!-- Live View Counter -->
+      <!-- Daily Unique Views -->
       <div class="text-center mt-6 text-gray-400 text-lg">
-        <i class="fas fa-eye"></i> <span id="views">0</span> people have visited
+        <i class="fas fa-eye"></i> <span id="views">0</span> people have visited today
       </div>
 
-      <!-- Comment Section -->
+      <!-- Comment Section (same as before) -->
       <div class="mt-10 px-6">
         <h3 class="text-xl font-bold text-white mb-4">Leave a comment</h3>
         <input id="commentName" placeholder="Your name" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 mb-3">
-        <textarea id="commentText" placeholder="Say something nice..." class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 h-24 mb-3 resize-none"></textarea>
+        <textarea id="commentText" placeholder="Say something..." class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 h-24 mb-3 resize-none"></textarea>
         <button onclick="addComment()" class="w-full bg-cyan-600 hover:bg-cyan-500 py-3 rounded-lg font-bold transition">Send</button>
-
         <div id="commentsList" class="mt-6 space-y-4 max-h-96 overflow-y-auto"></div>
       </div>
 
@@ -90,12 +92,19 @@
   </div>
 
   <script>
-    // Live Views
-    let views = parseInt(localStorage.getItem('views') || '0') + 1;
-    localStorage.setItem('views', views);
+    // === Daily Unique Views (1 count per user per day) ===
+    const today = new Date().toDateString();
+    const lastVisit = localStorage.getItem('lastVisit');
+    let views = parseInt(localStorage.getItem('dailyViews') || '0');
+
+    if (lastVisit !== today) {
+      views++;
+      localStorage.setItem('dailyViews', views);
+      localStorage.setItem('lastVisit', today);
+    }
     document.getElementById('views').textContent = views;
 
-    // Live Reactions
+    // === Reactions ===
     const reactions = JSON.parse(localStorage.getItem('reactions') || '{"zap":0,"heart":0,"fire":0}');
     document.getElementById('zap').textContent = reactions.zap;
     document.getElementById('heart').textContent = reactions.heart;
@@ -110,7 +119,7 @@
       setTimeout(() => btn.style.transform = '', 200);
     }
 
-    // Comments
+    // === Comments ===
     function loadComments() {
       const comments = JSON.parse(localStorage.getItem('comments') || '[]');
       const list = document.getElementById('commentsList');
@@ -129,7 +138,7 @@
       if (!text) return;
 
       const comments = JSON.parse(localStorage.getItem('comments') || '[]');
-      comments.push({ name, text, date: new Date().toLocaleString() });
+      comments.push({ name, text });
       localStorage.setItem('comments', JSON.stringify(comments));
 
       document.getElementById('commentName').value = '';
