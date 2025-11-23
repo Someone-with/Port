@@ -5,29 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Someone</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Whitney:wght@300;400;500;600;700&display=swap');
     body { font-family: 'Whitney', sans-serif; background: #000; }
     .glass { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
   </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 bg-black">
+<body class="min-h-screen p-4 bg-black">
 
-  <!-- Discord Profile Card -->
-  <div class="relative w-full max-w-md">
+  <div class="relative w-full max-w-md mx-auto">
 
-    <!-- Banner (feel free to change the image URL) -->
+    <!-- Banner -->
     <div class="h-48 bg-gradient-to-r from-cyan-600 via-purple-700 to-black rounded-t-3xl"></div>
 
-    <!-- Glass Card -->
-    <div class="glass bg-black/70 border border-white/20 rounded-3xl -mt-20 mx-4 shadow-2xl">
+    <!-- Main Glass Card -->
+    <div class="glass bg-black/70 border border-white/20 rounded-3xl -mt-20 mx-4 shadow-2xl pb-8">
 
       <!-- Avatar -->
       <div class="flex justify-center -mt-20">
-        <img src="https://tr.rbxcdn.com/180DAY-0e9b0f0e9b0f0e9b0f0e9b0f0e9b0f0e/420/420/Avatar/Png"
-             alt="Someone"
-             class="w-32 h-32 rounded-full border-8 border-black shadow-2xl ring-4 ring-cyan-500">
+        <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1944512650&width=420&height=420&format=png"
+             alt="Someone" class="w-32 h-32 rounded-full border-8 border-black shadow-2xl ring-4 ring-cyan-500">
       </div>
 
       <!-- Name + Username + Verified -->
@@ -42,37 +40,106 @@
         <p class="text-gray-400 text-lg">@someone</p>
       </div>
 
-      <!-- Divider -->
       <div class="mx-6 my-6 border-t border-white/10"></div>
 
-      <!-- About Me / Bio -->
-      <div class="px-6 text-gray-300 text-lg leading-relaxed">
-        Hi, I'm Someone!  
-        Roblox scripter • Game developer • Casino game enthusiast  
-        Creator of City Shootout, FPS kits, Unity gambling suite & more lightning
+      <!-- Bio -->
+      <div class="px-6 text-gray-300 text-lg leading-relaxed text-center">
+        Roblox scripter • Game developer • Casino game enthusiast<br>
+        Creator of City Shootout & lightning-fast FPS kits
       </div>
 
       <!-- Social Buttons -->
-      <div class="flex justify-center gap-5 mt-8 pb-8">
+      <div class="flex justify-center gap-6 mt-8">
         <a href="https://www.roblox.com/users/1944512650/profile" target="_blank"
            class="p-4 bg-gray-800 hover:bg-cyan-600 rounded-full transition transform hover:scale-110">
-          <i class="fab fa-roblox text-3xl"></i>
+          <i class="fa-brands fa-roblox text-3xl"></i>
         </a>
         <a href="https://discord.gg/FHmmE2EePE" target="_blank"
-           class="p-4 bg-gray-800 hover:bg-blurple rounded-full transition transform hover:scale-110">
-          <i class="fab fa-discord text-3xl"></i>
+           class="p-4 bg-gray-800 hover:bg-[#5865F2] rounded-full transition transform hover:scale-110">
+          <i class="fa-brands fa-discord text-3xl"></i>
         </a>
         <a href="https://youtube.com/@zapgamese" target="_blank"
            class="p-4 bg-gray-800 hover:bg-red-600 rounded-full transition transform hover:scale-110">
-          <i class="fab fa-youtube text-3xl"></i>
+          <i class="fa-brands fa-youtube text-3xl"></i>
         </a>
+      </div>
+
+      <!-- Live Reactions -->
+      <div class="flex justify-center gap-8 mt-10 text-4xl">
+        <button onclick="react('zap')" class="hover:scale-125 transition"><span id="zap">0</span></button>
+        <button onclick="react('heart')" class="hover:scale-125 transition"><span id="heart">0</span></button>
+        <button onclick="react('fire')" class="hover:scale-125 transition"><span id="fire">0</span></button>
+      </div>
+
+      <!-- Live View Counter -->
+      <div class="text-center mt-6 text-gray-400">
+        <i class="fas fa-eye"></i> <span id="views">0</span> people have visited
+      </div>
+
+      <!-- Comment Section -->
+      <div class="mt-10 px-6">
+        <h3 class="text-xl font-bold text-white mb-4">Leave a comment</h3>
+        <input id="commentName" placeholder="Your name" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 mb-3">
+        <textarea id="commentText" placeholder="Say something nice..." class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 h-24 mb-3"></textarea>
+        <button onclick="addComment()" class="w-full bg-cyan-600 hover:bg-cyan-500 py-3 rounded-lg font-bold transition">Send</button>
+
+        <div id="commentsList" class="mt-6 space-y-4"></div>
       </div>
 
     </div>
   </div>
 
-  <style>
-    .blurple { background-color: #5865F2; }
-  </style>
+  <script>
+    // === Live Views ===
+    let views = localStorage.getItem('views') || 0;
+    views++;
+    localStorage.setItem('views', views);
+    document.getElementById('views').textContent = views;
+
+    // === Live Reactions ===
+    const reactions = JSON.parse(localStorage.getItem('reactions') || '{"zap":0,"heart":0,"fire":0}');
+    document.getElementById('zap').textContent = reactions.zap;
+    document.getElementById('heart').textContent = reactions.heart;
+    document.getElementById('fire').textContent = reactions.fire;
+
+    function react(type) {
+      reactions[type]++;
+      localStorage.setItem('reactions', JSON.stringify(reactions));
+      document.getElementById(type).textContent = reactions[type];
+      // Little pop animation
+      const btn = event.target;
+      btn.style.transform = 'scale(1.5)';
+      setTimeout(() => btn.style.transform = '', 200);
+    }
+
+    // === Comments ===
+    function loadComments() {
+      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+      const list = document.getElementById('commentsList');
+      list.innerHTML = '';
+      comments.reverse().slice(0, 20).forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'bg-white/5 rounded-lg p-4 border border-white/10';
+        div.innerHTML = `<strong class="text-cyan-400">${c.name || 'Anonymous'}</strong><p class="text-gray-300 mt-1">${c.text}</p>`;
+        list.appendChild(div);
+      });
+    }
+
+    function addComment() {
+      const name = document.getElementById('commentName').value.trim() || 'Anonymous';
+      const text = document.getElementById('commentText').value.trim();
+      if (!text) return;
+
+      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
+      comments.push({ name, text, date: new Date().toLocaleString() });
+      localStorage.setItem('comments', JSON.stringify(comments));
+
+      document.getElementById('commentName').value = '';
+      document.getElementById('commentText').value = '';
+      loadComments();
+    }
+
+    loadComments();
+  </script>
 </body>
 </html>
