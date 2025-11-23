@@ -10,6 +10,8 @@
     @import url('https://fonts.googleapis.com/css2?family=Whitney:wght@300;400;500;600;700&display=swap');
     body { font-family: 'Whitney', sans-serif; background: #000; }
     .glass { backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+    .admin-panel { transition: all 0.4s; transform: translateY(100%); }
+    .admin-panel.open { transform: translateY(0); }
   </style>
 </head>
 <body class="min-h-screen p-4 bg-black">
@@ -24,12 +26,10 @@
 
       <!-- Avatar -->
       <div class="flex justify-center -mt-20">
-        <img src="https://cdn.discordapp.com/attachments/1431500505674289305/1441943442002415626/IMG_1470.jpg?ex=6923a1fa&is=6922507a&hm=a6f15a2cb7c80a7094e70ace9641acc2cdd70edca0f80cd2521812bdeb359998&"
-             alt="Someone"
-             class="w-32 h-32 rounded-full border-8 border-black shadow-2xl ring-4 ring-cyan-500 object-cover">
+        <img src="https://media.discordapp.net/attachments/1431500505674289305/1441943442002415626/IMG_1470.jpg" 
+             alt="Someone" class="w-32 h-32 rounded-full border-8 border-black shadow-2xl ring-4 ring-cyan-500 object-cover">
       </div>
 
-      <!-- Name + Verified -->
       <div class="text-center mt-6">
         <h1 class="text-3xl font-bold text-white flex items-center justify-center gap-2">
           Someone
@@ -43,41 +43,39 @@
 
       <div class="mx-6 my-6 border-t border-white/10"></div>
 
-      <!-- Bio -->
-      <div class="px-6 text-gray-300 text-lg text-center">
+      <!-- Bio (editable) -->
+      <div id="bioText" class="px-6 text-gray-300 text-lg text-center">
         Roblox scripter • Game developer
       </div>
 
       <!-- Social Buttons -->
       <div class="flex justify-center gap-8 mt-8">
-        <!-- Perfect Roblox logo (official) -->
-        <a href="https://www.roblox.com/users/1944512650/profile" target="_blank"
-           class="p-4 bg-gray-800 hover:bg-cyan-600 rounded-full transition transform hover:scale-110">
-          <img src="https://www.roblox.com/images/Logo/RobloxLogo.svg" alt="Roblox" class="w-10 h-10">
+        <a id="robloxLink" href="https://www.roblox.com/users/1944512650/profile" target="_blank"
+           class="p-4 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full transition transform hover:scale-110 shadow-lg">
+          <img src="https://www.roblox.com/img/RobloxLogo.png" alt="Roblox" class="w-10 h-10 rounded">
         </a>
-        <a href="https://discord.gg/FHmmE2EePE" target="_blank"
+        <a id="discordLink" href="https://discord.gg/FHmmE2EePE" target="_blank"
            class="p-4 bg-gray-800 hover:bg-[#5865F2] rounded-full transition transform hover:scale-110">
           <i class="fa-brands fa-discord text-3xl"></i>
         </a>
-        <a href="https://youtube.com/@zapgamese" target="_blank"
+        <a id="youtubeLink" href="https://youtube.com/@zapgamese" target="_blank"
            class="p-4 bg-gray-800 hover:bg-red-600 rounded-full transition transform hover:scale-110">
           <i class="fa-brands fa-youtube text-3xl"></i>
         </a>
       </div>
 
-      <!-- Live Reactions -->
+      <!-- Reactions -->
       <div class="flex justify-center gap-12 mt-10 text-5xl">
-        <button onclick="react('zap')" class="hover:scale-125 transition" title="Zap"> <span id="zap">0</span></button>
-        <button onclick="react('heart')" class="hover:scale-125 transition" title="Love"> <span id="heart">0</span></button>
-        <button onclick="react('fire')" class="hover:scale-125 transition" title="Fire"> <span id="fire">0</span></button>
+        <button onclick="react('zap')" class="hover:scale-125 transition"> <span id="zap">0</span></button>
+        <button onclick="react('heart')" class="hover:scale-125 transition"> <span id="heart">0</span></button>
+        <button onclick="react('fire')" class="hover:scale-125 transition"> <span id="fire">0</span></button>
       </div>
 
-      <!-- Daily Unique Views -->
       <div class="text-center mt-6 text-gray-400 text-lg">
         <i class="fas fa-eye"></i> <span id="views">0</span> people have visited today
       </div>
 
-      <!-- Comment Section -->
+      <!-- Comments -->
       <div class="mt-10 px-6">
         <h3 class="text-xl font-bold text-white mb-4">Leave a comment</h3>
         <input id="commentName" placeholder="Your name" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 mb-3">
@@ -85,60 +83,124 @@
         <button onclick="addComment()" class="w-full bg-cyan-600 hover:bg-cyan-500 py-3 rounded-lg font-bold transition">Send</button>
         <div id="commentsList" class="mt-6 space-y-4 max-h-96 overflow-y-auto"></div>
       </div>
+    </div>
 
+    <!-- SECRET ADMIN PANEL (only you can open) -->
+    <div id="adminPanel" class="admin-panel fixed bottom-0 left-0 right-0 glass bg-black/90 border-t border-cyan-500 p-6 max-w-md mx-auto rounded-t-3xl">
+      <h2 class="text-2xl font-bold text-cyan-400 mb-4">Owner Controls</h2>
+      <input id="adminBio" placeholder="New bio" class="w-full p-3 bg-white/10 border border-white/20 rounded mb-3 text-white">
+      <input id="adminRoblox" placeholder="Roblox link" class="w-full p-3 bg-white/10 border border-white/20 rounded mb-3 text-white">
+      <input id="adminDiscord" placeholder="Discord link" class="w-full p-3 bg-white/10 border border-white/20 rounded mb-3 text-white">
+      <input id="adminYoutube" placeholder="YouTube link" class="w-full p-3 bg-white/10 border border-white/20 rounded mb-5 text-white">
+      <button onclick="saveSettings()" class="w-full bg-cyan-600 hover:bg-cyan-500 py-3 rounded-lg font-bold">Save Changes</button>
+      <button onclick="closeAdmin()" class="w-full mt-2 bg-red-600 hover:bg-red-500 py-3 rounded-lg font-bold">Close Panel</button>
     </div>
   </div>
 
   <script>
-    // Daily unique views
+    // CHANGE THIS TO YOUR SECRET PASSWORD
+    const OWNER_PASSWORD = "zapadmin123";   // ←←← CHANGE THIS!!!
+
+    let input = "";
+    let isOwner = localStorage.getItem("isOwner") === "true";
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && input === OWNER_PASSWORD) {
+        localStorage.setItem("isOwner", "true");
+        isOwner = true;
+        document.getElementById("adminPanel").classList.add("open");
+        loadAdminSettings();
+        input = "";
+      } else if (e.key.length === 1) {
+        input += e.key;
+      } else if (e.key === "Backspace") {
+        input = input.slice(0, -1);
+      }
+    });
+
+    // Load saved settings
+    const saved = JSON.parse(localStorage.getItem("portfolioSettings") || "{}");
+    if (saved.bio) document.getElementById("bioText").textContent = saved.bio;
+    if (saved.roblox) document.getElementById("robloxLink").href = saved.roblox;
+    if (saved.discord) document.getElementById("discordLink").href = saved.discord;
+    if (saved.youtube) document.getElementById("youtubeLink").href = saved.youtube;
+
+    function loadAdminSettings() {
+      document.getElementById("adminBio").value = document.getElementById("bioText").textContent;
+      document.getElementById("adminRoblox").value = document.getElementById("robloxLink").href;
+      document.getElementById("adminDiscord").value = document.getElementById("discordLink").href;
+      document.getElementById("adminYoutube").value = document.getElementById("youtubeLink").href;
+    }
+
+    function saveSettings() {
+      const newSettings = {
+        bio: document.getElementById("adminBio").value || "Roblox scripter • Game developer",
+        roblox: document.getElementById("adminRoblox").value || "https://roblox.com",
+        discord: document.getElementById("adminDiscord").value || "https://discord.gg",
+        youtube: document.getElementById("adminYoutube").value || "https://youtube.com"
+      };
+      localStorage.setItem("portfolioSettings", JSON.stringify(newSettings));
+      location.reload();
+    }
+
+    function closeAdmin() {
+      document.getElementById("adminPanel").classList.remove("open");
+    }
+
+    // Daily views, reactions, comments with delete (owner only)
     const today = new Date().toDateString();
-    const lastVisit = localStorage.getItem('lastVisit');
-    let views = parseInt(localStorage.getItem('dailyViews') || '0');
-    if (lastVisit !== today) {
-      views++;
-      localStorage.setItem('dailyViews', views);
-      localStorage.setItem('lastVisit', today);
+    if (localStorage.getItem("lastVisit") !== today) {
+      let views = parseInt(localStorage.getItem("dailyViews") || "0") + 1;
+      localStorage.setItem("dailyViews", views);
+      localStorage.setItem("lastVisit", today);
     }
-    document.getElementById('views').textContent = views;
+    document.getElementById("views").textContent = localStorage.getItem("dailyViews") || "0";
 
-    // Reactions
-    const reactions = JSON.parse(localStorage.getItem('reactions') || '{"zap":0,"heart":0,"fire":0}');
-    document.getElementById('zap').textContent = reactions.zap;
-    document.getElementById('heart').textContent = reactions.heart;
-    document.getElementById('fire').textContent = reactions.fire;
-
-    function react(type) {
+    const reactions = JSON.parse(localStorage.getItem("reactions") || '{"zap":0,"heart":0,"fire":0}');
+    Object.keys(reactions).forEach(r => document.getElementById(r).textContent = reactions[r]);
+    window.react = (type) => {
       reactions[type]++;
-      localStorage.setItem('reactions', JSON.stringify(reactions));
+      localStorage.setItem("reactions", JSON.stringify(reactions));
       document.getElementById(type).textContent = reactions[type];
-      const btn = event.target.closest('button');
-      btn.style.transform = 'scale(1.6)';
-      setTimeout(() => btn.style.transform = '', 200);
-    }
+    };
 
-    // Comments
     function loadComments() {
-      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
-      const list = document.getElementById('commentsList');
-      list.innerHTML = '';
-      comments.slice(-20).reverse().forEach(c => {
-        const div = document.createElement('div');
-        div.className = 'bg-white/5 rounded-lg p-4 border border-white/10';
-        div.innerHTML = `<strong class="text-cyan-400">${c.name || 'Anonymous'}</strong><p class="text-gray-300 mt-1 text-sm">${c.text}</p>`;
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      const list = document.getElementById("commentsList");
+      list.innerHTML = "";
+      comments.slice(-30).reverse().forEach((c, i) => {
+        const idx = comments.length - 1 - i;
+        const div = document.createElement("div");
+        div.className = "bg-white/5 rounded-lg p-4 border border-white/10 relative";
+        div.innerHTML = `
+          <strong class="text-cyan-400">${c.name || "Anonymous"}</strong>
+          <p class="text-gray-300 text-sm mt-1">${c.text}</p>
+          ${isOwner ? `<button onclick="deleteComment(${idx})" class="absolute top-2 right-2 text-red-500 hover:text-red-400 text-xl">×</button>` : ""}
+        `;
         list.appendChild(div);
       });
     }
-    function addComment() {
-      const name = document.getElementById('commentName').value.trim() || 'Anonymous';
-      const text = document.getElementById('commentText').value.trim();
-      if (!text) return;
-      const comments = JSON.parse(localStorage.getItem('comments') || '[]');
-      comments.push({ name, text });
-      localStorage.setItem('comments', JSON.stringify(comments));
-      document.getElementById('commentName').value = '';
-      document.getElementById('commentText').value = '';
+
+    window.deleteComment = (index) => {
+      if (!isOwner) return;
+      let comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      comments.splice(index, 1);
+      localStorage.setItem("comments", JSON.stringify(comments));
       loadComments();
-    }
+    };
+
+    window.addComment = () => {
+      const name = document.getElementById("commentName").value.trim() || "Anonymous";
+      const text = document.getElementById("commentText").value.trim();
+      if (!text) return;
+      const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+      comments.push({ name, text });
+      localStorage.setItem("comments", JSON.stringify(comments));
+      document.getElementById("commentName").value = "";
+      document.getElementById("commentText").value = "";
+      loadComments();
+    };
+
     loadComments();
   </script>
 </body>
