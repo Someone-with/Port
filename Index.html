@@ -22,10 +22,11 @@
     <!-- Main Glass Card -->
     <div class="glass bg-black/70 border border-white/20 rounded-3xl -mt-20 mx-4 shadow-2xl pb-8">
 
-      <!-- Avatar -->
+      <!-- Avatar - Your exact Discord PFP -->
       <div class="flex justify-center -mt-20">
-        <img src="https://www.roblox.com/headshot-thumbnail/image?userId=1944512650&width=420&height=420&format=png"
-             alt="Someone" class="w-32 h-32 rounded-full border-8 border-black shadow-2xl ring-4 ring-cyan-500">
+        <img src="https://cdn.discordapp.com/attachments/1431500505674289305/1441943442002415626/IMG_1470.jpg?ex=6923a1fa&is=6922507a&hm=a6f15a2cb7c80a7094e70ace9641acc2cdd70edca0f80cd2521812bdeb359998&"
+             alt="Someone"
+             class="w-32 h-32 rounded-full border-8 border-black shadow-2xl ring-4 ring-cyan-500 object-cover">
       </div>
 
       <!-- Name + Username + Verified -->
@@ -64,14 +65,14 @@
       </div>
 
       <!-- Live Reactions -->
-      <div class="flex justify-center gap-8 mt-10 text-4xl">
-        <button onclick="react('zap')" class="hover:scale-125 transition"><span id="zap">0</span></button>
-        <button onclick="react('heart')" class="hover:scale-125 transition"><span id="heart">0</span></button>
-        <button onclick="react('fire')" class="hover:scale-125 transition"><span id="fire">0</span></button>
+      <div class="flex justify-center gap-10 mt-10 text-5xl">
+        <button onclick="react('zap')" class="hover:scale-125 transition" title="Zap"> <span id="zap">0</span></button>
+        <button onclick="react('heart')" class="hover:scale-125 transition" title="Love"> <span id="heart">0</span></button>
+        <button onclick="react('fire')" class="hover:scale-125 transition" title="Fire"> <span id="fire">0</span></button>
       </div>
 
       <!-- Live View Counter -->
-      <div class="text-center mt-6 text-gray-400">
+      <div class="text-center mt-6 text-gray-400 text-lg">
         <i class="fas fa-eye"></i> <span id="views">0</span> people have visited
       </div>
 
@@ -79,23 +80,22 @@
       <div class="mt-10 px-6">
         <h3 class="text-xl font-bold text-white mb-4">Leave a comment</h3>
         <input id="commentName" placeholder="Your name" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 mb-3">
-        <textarea id="commentText" placeholder="Say something nice..." class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 h-24 mb-3"></textarea>
+        <textarea id="commentText" placeholder="Say something nice..." class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 h-24 mb-3 resize-none"></textarea>
         <button onclick="addComment()" class="w-full bg-cyan-600 hover:bg-cyan-500 py-3 rounded-lg font-bold transition">Send</button>
 
-        <div id="commentsList" class="mt-6 space-y-4"></div>
+        <div id="commentsList" class="mt-6 space-y-4 max-h-96 overflow-y-auto"></div>
       </div>
 
     </div>
   </div>
 
   <script>
-    // === Live Views ===
-    let views = localStorage.getItem('views') || 0;
-    views++;
+    // Live Views
+    let views = parseInt(localStorage.getItem('views') || '0') + 1;
     localStorage.setItem('views', views);
     document.getElementById('views').textContent = views;
 
-    // === Live Reactions ===
+    // Live Reactions
     const reactions = JSON.parse(localStorage.getItem('reactions') || '{"zap":0,"heart":0,"fire":0}');
     document.getElementById('zap').textContent = reactions.zap;
     document.getElementById('heart').textContent = reactions.heart;
@@ -105,21 +105,20 @@
       reactions[type]++;
       localStorage.setItem('reactions', JSON.stringify(reactions));
       document.getElementById(type).textContent = reactions[type];
-      // Little pop animation
-      const btn = event.target;
-      btn.style.transform = 'scale(1.5)';
+      const btn = event.target.closest('button');
+      btn.style.transform = 'scale(1.6)';
       setTimeout(() => btn.style.transform = '', 200);
     }
 
-    // === Comments ===
+    // Comments
     function loadComments() {
       const comments = JSON.parse(localStorage.getItem('comments') || '[]');
       const list = document.getElementById('commentsList');
       list.innerHTML = '';
-      comments.reverse().slice(0, 20).forEach(c => {
+      comments.slice(-20).reverse().forEach(c => {
         const div = document.createElement('div');
         div.className = 'bg-white/5 rounded-lg p-4 border border-white/10';
-        div.innerHTML = `<strong class="text-cyan-400">${c.name || 'Anonymous'}</strong><p class="text-gray-300 mt-1">${c.text}</p>`;
+        div.innerHTML = `<strong class="text-cyan-400">${c.name || 'Anonymous'}</strong><p class="text-gray-300 mt-1 text-sm">${c.text}</p>`;
         list.appendChild(div);
       });
     }
