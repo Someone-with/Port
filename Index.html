@@ -47,11 +47,7 @@
     <div class="flex justify-center gap-10 mt-8">
       <a id="robloxLink" href="https://www.roblox.com/users/1944512650/profile" target="_blank"
          class="p-4 bg-gray-800 hover:bg-cyan-600 rounded-full transition hover:scale-110">
-        <svg viewBox="0 0 256 256" class="w-10 h-10">
-          <rect width="256" height="256" rx="60" fill="#00C3FF"/>
-          <path d="M204.8 76.8 128 115.2l-25.6-38.4L51.2 51.2l76.8 153.6 76.8-76.8z" fill="white"/>
-          <path d="M179.2 102.4 128 128l25.6 38.4 51.2 25.6-25.6-89.6z" fill="#0A1E33"/>
-        </svg>
+        <img src="https://www.roblox.com/images/Logo/RobloxLogo.png" alt="Roblox" class="w-10 h-10">
       </a>
       <a id="discordLink" href="https://discord.gg/FHmmE2EePE" target="_blank"
          class="p-4 bg-gray-800 hover:bg-[#5865F2] rounded-full transition hover:scale-110">
@@ -64,9 +60,9 @@
     </div>
 
     <div class="flex justify-center gap-12 mt-10 text-5xl">
-      <button onclick="react('zap')" class="hover:scale-125 transition"><span id="zap">0</span></button>
-      <button onclick="react('heart')" class="hover:scale-125 transition"><span id="heart">0</span></button>
-      <button onclick="react('fire')" class="hover:scale-125 transition"><span id="fire">0</span></button>
+      <button onclick="react('zap')" class="hover:scale-125 transition">Lightning</button>
+      <button onclick="react('heart')" class="hover:scale-125 transition">Heart</button>
+      <button onclick="react('fire')" class="hover:scale-125 transition">Fire</button>
     </div>
 
     <div class="text-center mt-6 text-gray-400 text-lg">
@@ -154,8 +150,15 @@ if(localStorage.getItem("lastVisit")!==today){
 document.getElementById("views").textContent=localStorage.getItem("dailyViews")||"0";
 
 const reactions=JSON.parse(localStorage.getItem("reactions")||"{\"zap\":0,\"heart\":0,\"fire\":0}");
-Object.keys(reactions).forEach(r=>document.getElementById(r).textContent=reactions[r]);
-window.react=t=>{reactions[t]++;localStorage.setItem("reactions",JSON.stringify(reactions));document.getElementById(t).textContent=reactions[t]};
+document.querySelectorAll("button")[3].innerHTML=reactions.zap;
+document.querySelectorAll("button")[4].innerHTML=reactions.heart;
+document.querySelectorAll("button")[5].innerHTML=reactions.fire;
+
+window.react=t=>{
+  reactions[t]++;
+  localStorage.setItem("reactions",JSON.stringify(reactions));
+  document.querySelectorAll("button")[t==="zap"?3:t==="heart"?4:5].innerHTML=reactions[t];
+};
 
 function loadComments(){
   const c=JSON.parse(localStorage.getItem("comments")||"[]");
