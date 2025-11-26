@@ -3,180 +3,157 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Someone</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+  <title>Someone | Dev Portfolio</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Whitney:wght@300;400;500;600;700&display=swap');
-    body{font-family:'Whitney',sans-serif;background:#000}
-    .glass{backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
-    .admin-panel{transition:all .4s;transform:translateY(100%)}
-    .admin-panel.open{transform:translateY(0)}
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    :root {
+      --glass: rgba(255, 255, 255, 0.11);
+      --border: rgba(255, 255, 255, 0.2);
+      --text: #ffffff;
+      --accent: #ff9500;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 3rem 2.5rem;
+      max-width: 460px;
+      width: 100%;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255,255,255,0.06), transparent);
+      transform: rotate(45deg);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .pfp {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 4px solid var(--border);
+      object-fit: cover;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .pfp:hover { border-color: var(--accent); }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .bio {
+      font-size: 1.25rem;
+      font-weight: 500;
+      opacity: 0.95;
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 1rem 1.5rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.05rem;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.18);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn i { font-size: 1.4rem; }
+
+    @media (max-width: 480px) {
+      .card { padding: 2rem 1.5rem; }
+      h1 { font-size: 1.7rem; }
+    }
   </style>
 </head>
-<body class="min-h-screen p-4 bg-black">
+<body>
+  <div class="card">
+    <img src="https://cdn.discordapp.com/attachments/1431500505674289305/1441943442002415626/IMG_1470.jpg?ex=6927967a&is=692644fa&hm=73c1c08b7c4ab9b0e89a82c7e6a6fcd9845d52a422d90cc067585d14e9f2f4ea&" alt="Someone" class="pfp">
 
-<div class="relative w-full max-w-md mx-auto">
-  <div class="h-48 bg-gradient-to-r from-cyan-600 via-purple-700 to-black rounded-t-3xl"></div>
+    <h1>Someone</h1>
+    <div class="bio">Discord Bot & Game Developer</div>
 
-  <div class="glass bg-black/70 border border-white/20 rounded-3xl -mt-20 mx-4 shadow-2xl pb-8">
-
-    <div class="flex justify-center -mt-20">
-      <img src="https://cdn.discordapp.com/attachments/1431500505674289305/1441943442002415626/IMG_1470.jpg"
-           alt="Someone"
-           class="w-32 h-32 rounded-full border-8 border-black shadow-2xl ring-4 ring-cyan-500 object-cover">
-    </div>
-
-    <div class="text-center mt-6">
-      <h1 class="text-3xl font-bold text-white flex items-center justify-center gap-2">
-        Someone
-        <svg class="w-7 h-7 text-blue-400" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M22.25 12c0-5.66-4.59-10.25-10.25-10.25S1.75 6.34 1.75 12 6.34 22.25 12 22.25 22.25 17.66 22.25 12z"/>
-          <path fill="#fff" d="M10.13 14.75l6.5-6.5-1.38-1.38-5.12 5.12-2.62-2.62-1.38 1.38z"/>
-        </svg>
-      </h1>
-      <p class="text-gray-400 text-lg">@someone</p>
-    </div>
-
-    <div class="mx-6 my-6 border-t border-white/10"></div>
-
-    <div id="bioText" class="px-6 text-gray-300 text-lg text-center">
-      Roblox scripter • Game developer
-    </div>
-
-    <div class="flex justify-center gap-10 mt-8">
-      <a id="robloxLink" href="https://www.roblox.com/users/1944512650/profile" target="_blank"
-         class="p-4 bg-gray-800 hover:bg-cyan-600 rounded-full transition hover:scale-110">
-        <img src="https://www.roblox.com/images/Logo/RobloxLogo.png" alt="Roblox" class="w-10 h-10">
+    <div class="buttons">
+      <a href="https://www.roblox.com/users/1944512650/profile" target="_blank" class="btn">
+        <i class="fab fa-roblox"></i> Roblox (zaneioio)
       </a>
-      <a id="discordLink" href="https://discord.gg/FHmmE2EePE" target="_blank"
-         class="p-4 bg-gray-800 hover:bg-[#5865F2] rounded-full transition hover:scale-110">
-        <i class="fa-brands fa-discord text-3xl"></i>
+
+      <a href="https://youtube.com/@zapgamese" target="_blank" class="btn">
+        <i class="fab fa-youtube"></i> YouTube
       </a>
-      <a id="youtubeLink" href="https://youtube.com/@zapgamese" target="_blank"
-         class="p-4 bg-gray-800 hover:bg-red-600 rounded-full transition hover:scale-110">
-        <i class="fa-brands fa-youtube text-3xl"></i>
+
+      <a href="https://www.tiktok.com/@zapgamses" target="_blank" class="btn">
+        <i class="fab fa-tiktok"></i> TikTok
       </a>
-    </div>
 
-    <div class="flex justify-center gap-12 mt-10 text-5xl">
-      <button onclick="react('zap')" class="hover:scale-125 transition">Lightning</button>
-      <button onclick="react('heart')" class="hover:scale-125 transition">Heart</button>
-      <button onclick="react('fire')" class="hover:scale-125 transition">Fire</button>
-    </div>
+      <a href="https://discord.gg/23ZvrK9sYq" target="_blank" class="btn">
+        <i class="fab fa-discord"></i> Discord Server
+      </a>
 
-    <div class="text-center mt-6 text-gray-400 text-lg">
-      <i class="fas fa-eye"></i> <span id="views">0</span> people have visited today
-    </div>
-
-    <div class="mt-10 px-6">
-      <h3 class="text-xl font-bold text-white mb-4">Leave a comment</h3>
-      <input id="commentName" placeholder="Your name" class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 mb-3">
-      <textarea id="commentText" placeholder="Say something..." class="w-full p-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-500 h-24 mb-3 resize-none"></textarea>
-      <button id="sendBtn" onclick="addComment()" class="w-full bg-cyan-600 hover:bg-cyan-500 py-3 rounded-lg font-bold transition">Send</button>
-      <div id="commentsList" class="mt-6 space-y-4 max-h-96 overflow-y-auto"></div>
-    </div>
-
-    <div class="mt-8 px-6 pb-4">
-      <input type="text" id="promoCode" placeholder="Enter promo code..."
-             class="w-full p-3 rounded-lg bg-white/10 border border-cyan-500/50 text-white placeholder-gray-500 text-sm">
-      <button onclick="checkPromo()" class="mt-2 w-full bg-gradient-to-r from-cyan-600 to-purple-600 hover:from-cyan-500 hover:to-purple-500 py-3 rounded-lg font-bold text-sm">
-        Redeem Code
-      </button>
+      <a href="https://github.com/Someone-with" target="_blank" class="btn">
+        <i class="fab fa-github  "></i> GitHub
+      </a>
     </div>
   </div>
-</div>
-
-<div id="adminPanel" class="admin-panel fixed inset-x-0 bottom-0 glass bg-black/95 border-t-4 border-cyan-500 p-6 max-w-md mx-auto rounded-t-3xl z-50">
-  <h2 class="text-2xl font-bold text-cyan-400 mb-4 text-center">Owner Panel</h2>
-  <input id="adminBio" placeholder="Edit bio..." class="w-full p-3 bg-white/10 border border-white/20 rounded mb-3 text-white text-sm">
-  <input id="adminRoblox" placeholder="Roblox link" class="w-full p-3 bg-white/10 border border-white/20 rounded mb-3 text-white text-sm">
-  <input id="adminDiscord" placeholder="Discord link" class="w-full p-3 bg-white/10 border border-white/20 rounded mb-3 text-white text-sm">
-  <input id="adminYoutube" placeholder="YouTube link" class="w-full p-3 bg-white/10 border border-white/20 rounded mb-5 text-white text-sm">
-  <button onclick="saveSettings()" class="w-full bg-cyan-600 hover:bg-cyan-500 py-3 rounded-lg font-bold">Save Changes</button>
-  <button onclick="closePanel()" class="w-full mt-2 bg-red-600 hover:bg-red-500 py-3 rounded-lg font-bold">Close</button>
-</div>
-
-<script>
-const SECRET_CODE="zapadmin123";
-const isOwner=localStorage.getItem("isOwner")==="true";
-
-const badWords=["nigger","nigga","faggot","fag","retard","cunt","bitch","whore","slut","pussy","dick","cock","fuck","shit","asshole","motherfucker","bastard","twat","wanker","spic","chink","kike","tranny","rape","rapist","pedo","pedophile","hitler","nazi","coon","porchmonkey","beaner","wetback","gook"];
-const badRegex=new RegExp(badWords.join("|"),"gi");
-
-function containsBadWord(t){return badRegex.test(t.replace(/[^a-zA-Z]/g,""))}
-function isCommentBanned(){const b=localStorage.getItem("commentBanUntil");return b&&Date.now()<parseInt(b)}
-function banFromCommenting(){localStorage.setItem("commentBanUntil",Date.now()+36e5);document.getElementById("sendBtn").disabled=true;document.getElementById("sendBtn").textContent="Blocked for 1 hour";setTimeout(()=>{document.getElementById("sendBtn").disabled=false;document.getElementById("sendBtn").textContent="Send"},36e5)}
-
-window.addComment=()=>{
-  if(isOwner)return;
-  if(isCommentBanned()){alert("You're blocked from commenting for 1 hour due to inappropriate language.");return}
-  const n=document.getElementById("commentName").value.trim()||"Anonymous";
-  const t=document.getElementById("commentText").value.trim();
-  if(!t)return;
-  if(containsBadWord(t)){banFromCommenting();alert("Inappropriate language detected. Comment blocked and muted for 1 hour.");document.getElementById("commentText").value="";return}
-  const c=JSON.parse(localStorage.getItem("comments")||"[]");c.push({name:n,text:t});localStorage.setItem("comments",JSON.stringify(c));
-  document.getElementById("commentName").value="";document.getElementById("commentText").value="";loadComments();
-};
-
-function checkPromo(){if(document.getElementById("promoCode").value.trim()===SECRET_CODE){localStorage.setItem("isOwner","true");document.getElementById("adminPanel").classList.add("open");loadAdminSettings();document.getElementById("promoCode").value=""}}
-function closePanel(){document.getElementById("adminPanel").classList.remove("open")}
-
-const saved=JSON.parse(localStorage.getItem("portfolioSettings")||"{}");
-if(saved.bio)document.getElementById("bioText").innerText=saved.bio;
-if(saved.roblox)document.getElementById("robloxLink").href=saved.roblox;
-if(saved.discord)document.getElementById("discordLink").href=saved.discord;
-if(saved.youtube)document.getElementById("youtubeLink").href=saved.youtube;
-
-function loadAdminSettings(){
-  document.getElementById("adminBio").value=document.getElementById("bioText").innerText;
-  document.getElementById("adminRoblox").value=document.getElementById("robloxLink").href;
-  document.getElementById("adminDiscord").value=document.getElementById("discordLink").href;
-  document.getElementById("adminYoutube").value=document.getElementById("youtubeLink").href;
-}
-function saveSettings(){
-  const s={bio:document.getElementById("adminBio").value||"Roblox scripter • Game developer",
-           roblox:document.getElementById("adminRoblox").value,
-           discord:document.getElementById("adminDiscord").value,
-           youtube:document.getElementById("adminYoutube").value};
-  localStorage.setItem("portfolioSettings",JSON.stringify(s));location.reload();
-}
-
-const today=new Date().toDateString();
-if(localStorage.getItem("lastVisit")!==today){
-  let v=(parseInt(localStorage.getItem("dailyViews")||"0"))+1;
-  localStorage.setItem("dailyViews",v);localStorage.setItem("lastVisit",today);
-}
-document.getElementById("views").textContent=localStorage.getItem("dailyViews")||"0";
-
-const reactions=JSON.parse(localStorage.getItem("reactions")||"{\"zap\":0,\"heart\":0,\"fire\":0}");
-document.querySelectorAll("button")[3].innerHTML=reactions.zap;
-document.querySelectorAll("button")[4].innerHTML=reactions.heart;
-document.querySelectorAll("button")[5].innerHTML=reactions.fire;
-
-window.react=t=>{
-  reactions[t]++;
-  localStorage.setItem("reactions",JSON.stringify(reactions));
-  document.querySelectorAll("button")[t==="zap"?3:t==="heart"?4:5].innerHTML=reactions[t];
-};
-
-function loadComments(){
-  const c=JSON.parse(localStorage.getItem("comments")||"[]");
-  const list=document.getElementById("commentsList");list.innerHTML="";
-  c.slice(-30).reverse().forEach((com,i)=>{
-    const idx=c.length-1-i;
-    const div=document.createElement("div");
-    div.className="bg-white/5 rounded-lg p-4 border border-white/10 relative";
-    div.innerHTML=`<strong class="text-cyan-400">${com.name||"Anonymous"}</strong>
-                   <p class="text-gray-300 text-sm mt-1">${com.text}</p>
-                   ${isOwner?`<button onclick="deleteComment(${idx})" class="absolute top-2 right-2 text-red-500 hover:text-red-400 text-xl">×</button>`:""}`;
-    list.appendChild(div);
-  });
-}
-window.deleteComment=i=>{if(isOwner){let c=JSON.parse(localStorage.getItem("comments")||"[]");c.splice(i,1);localStorage.setItem("comments",JSON.stringify(c));loadComments()}};
-loadComments();
-
-if(isCommentBanned()&&!isOwner){document.getElementById("sendBtn").disabled=true;document.getElementById("sendBtn").textContent="Blocked for 1 hour"}
-</script>
 </body>
 </html>
